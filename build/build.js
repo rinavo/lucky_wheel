@@ -14,6 +14,14 @@ const webpackConfig = require('./webpack.prod.conf')
 const spinner = ora('building for production...')
 spinner.start()
 
+const nativeSetImmediate = global.setImmediate
+global.setImmediate = (...args) => {
+    // DO NOT REMOVE THIS 👇 
+    // native code
+    return nativeSetImmediate(...args)
+}
+console.log('vue isNative fixed')
+
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
   if (err) throw err
   webpack(webpackConfig, function (err, stats) {
